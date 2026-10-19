@@ -21,7 +21,7 @@
 <style>
 :root{
   --bg:#EEEFF4; --sheen:#FFFFFF; --surface:#F8F8FB; --ink:#23233B; --muted:#676982; --line:#D3D5E1;
-  --gold:#A3804A; --love:#AE4566; --love-soft:#F5E5EB; --on-ink:#F8F8FB; --finger:#E0D6CE; --gem:#FFFFFF;
+  --gold:#A3804A; --love:#AE4566; --love-soft:#F5E5EB; --muted-strong:#55576F; --on-ink:#F8F8FB; --finger:#E0D6CE; --gem:#FFFFFF;
   --serif:"Bodoni Moda","Bodoni 72","Didot","Bodoni MT",Georgia,serif;
   --sans:"Jost","Futura","Avenir Next","Segoe UI",system-ui,sans-serif;
   color-scheme:light;
@@ -32,13 +32,13 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#14152A; --sheen:#232445; --surface:#1C1D36; --ink:#ECEAF3; --muted:#A4A6C1; --line:#34365B;
-    --gold:#D4B67E; --love:#EA86A3; --love-soft:#3A2338; --on-ink:#14152A; --finger:#4B4357; --gem:#2A2B4A;
+    --gold:#D4B67E; --love:#EA86A3; --love-soft:#3A2338; --muted-strong:#B9BBD3; --on-ink:#14152A; --finger:#4B4357; --gem:#2A2B4A;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#14152A; --sheen:#232445; --surface:#1C1D36; --ink:#ECEAF3; --muted:#A4A6C1; --line:#34365B;
-  --gold:#D4B67E; --love:#EA86A3; --love-soft:#3A2338; --on-ink:#14152A; --finger:#4B4357; --gem:#2A2B4A;
+  --gold:#D4B67E; --love:#EA86A3; --love-soft:#3A2338; --muted-strong:#B9BBD3; --on-ink:#14152A; --finger:#4B4357; --gem:#2A2B4A;
   color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:inherit}
@@ -51,6 +51,7 @@ body{
 }
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 button,input,select,textarea{font:inherit;color:inherit}
+button,a,input[type=range]{touch-action:manipulation}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 [hidden]{display:none !important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -58,7 +59,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* header */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg)}
 .foot{background:var(--bg)}
-@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) and (background:color-mix(in srgb,red 50%,blue)){
   .top,.foot{background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2)}
 }
 .top-inner{max-width:640px;margin:0 auto;padding:12px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--line)}
@@ -105,7 +106,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .linkbtn{background:none;border:0;padding:10px 4px;color:var(--muted);font-size:14.5px;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;cursor:pointer}
 
 /* steps */
-.step h2,.review h2{font-family:var(--serif);font-weight:500;font-size:clamp(36px,9vw,48px);line-height:1.04;letter-spacing:-.01em;margin:0 0 12px;font-optical-sizing:auto;outline:none;text-wrap:balance}
+.step h1,.review h1{font-family:var(--serif);font-weight:500;font-size:clamp(36px,9vw,48px);line-height:1.04;letter-spacing:-.01em;margin:0 0 12px;font-optical-sizing:auto;outline:none;text-wrap:balance}
 .step .note,.review .note{color:var(--muted);margin:0 0 42px;max-width:42ch;font-size:16.5px;text-wrap:pretty}
 .enter-f{animation:enterF .38s cubic-bezier(.2,.7,.2,1)}
 .enter-b{animation:enterB .38s cubic-bezier(.2,.7,.2,1)}
@@ -130,7 +131,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .pills{display:flex;flex-wrap:wrap;gap:10px}
 .pill{border:1px solid var(--line);background:transparent;border-radius:999px;padding:10px 17px;min-height:44px;font-size:15.5px;line-height:1.25;cursor:pointer;transition:background .18s,color .18s,border-color .18s,opacity .18s}
 .pill[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
-.pills.full .pill[aria-pressed="false"]{opacity:.36}
+.pills.full .pill[aria-pressed="false"]{opacity:.45}
 .pills.small{gap:8px}
 .pills.small .pill{min-height:34px;padding:6px 13px;font-size:14px}
 .counter{font-size:13.5px;color:var(--muted);margin:12px 0 0}
@@ -156,8 +157,10 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tsub{font-size:12.5px;line-height:1.3;color:var(--muted);text-wrap:balance}
 .tile[data-state="love"]{--chip-bg:var(--love-soft);border-color:var(--love)}
 .tile[data-state="love"] .art{color:var(--love)}
-.tile[data-state="no"]{opacity:.38}
-.tile[data-state="no"] .tname{text-decoration:line-through}
+.tile[data-state="no"]{--chip-bg:transparent;border-style:dashed}
+.tile[data-state="no"] .art{opacity:.3}
+.tile[data-state="no"] .tname{text-decoration:line-through;color:var(--muted)}
+.tile[data-state="love"] .tsub{color:var(--muted-strong)}
 .badge{position:absolute;top:8px;right:9px;width:16px;height:16px}
 .badge svg{width:16px;height:16px;display:block;animation:pop .3s cubic-bezier(.3,1.6,.5,1)}
 .hrt{fill:var(--love)}
@@ -208,11 +211,13 @@ select.field{-webkit-appearance:none;appearance:none;padding-right:42px;max-widt
 
 /* footer */
 .foot{position:fixed;left:0;right:0;bottom:0;z-index:6;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.foot{transition:transform .25s ease}
+body.typing .foot{transform:translateY(110%)}
 .foot-inner{max-width:640px;margin:0 auto;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 
 /* review */
 .report{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 22px 6px}
-.report::before{content:"";position:absolute;inset:5px;border:1px solid color-mix(in srgb,var(--gold) 50%,transparent);border-radius:4px;pointer-events:none}
+.report::before{content:"";position:absolute;inset:5px;border:1px solid var(--line);border-color:color-mix(in srgb,var(--gold) 50%,transparent);border-radius:4px;pointer-events:none}
 .r-top{display:flex;align-items:center;gap:14px;padding:16px 0 18px;border-bottom:1px solid var(--line)}
 .r-top svg{width:34px;height:34px;flex:none;fill:none;stroke:var(--gold);stroke-linejoin:round}
 .r-top p{margin:0;font-family:var(--serif);font-style:italic;font-size:24px;line-height:1.1}
@@ -220,7 +225,7 @@ select.field{-webkit-appearance:none;appearance:none;padding-right:42px;max-widt
 .r-sec{padding:18px 0 20px;border-bottom:1px solid var(--line)}
 .r-sec:last-child{border-bottom:0}
 .r-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}
-.r-head h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:21px;line-height:1.2;margin:0}
+.r-head h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:21px;line-height:1.2;margin:0}
 .r-head .linkbtn{padding:6px 2px;font-size:14px}
 .review dl{margin:0;display:grid;gap:12px}
 .review dt{font-size:13px;color:var(--muted);line-height:1.3}
@@ -240,7 +245,7 @@ select.field{-webkit-appearance:none;appearance:none;padding-right:42px;max-widt
 
 /* done */
 .done{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px 64px;max-width:520px;margin:0 auto;width:100%}
-.done h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(44px,12vw,60px);line-height:1.04;margin:26px 0 14px}
+.done h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(44px,12vw,60px);line-height:1.04;margin:26px 0 14px}
 .status{font-size:17.5px;max-width:30ch;margin:0 auto}
 .status small{display:block;color:var(--muted);font-size:14.5px;margin-top:10px;max-width:34ch;margin-left:auto;margin-right:auto}
 .done-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:28px 0 10px}
@@ -430,6 +435,18 @@ var SETS={
   ]
 };
 
+var LOOKS={
+  round:"Ovals, pears and marquise look bigger than a round of the same weight.",
+  oval:"An oval looks bigger than a round of the same weight.",
+  pear:"A pear looks bigger than a round of the same weight.",
+  marquise:"A marquise looks bigger than any other shape of the same weight.",
+  cushion:"A cushion looks a little smaller than a round of the same weight.",
+  princess:"A princess cut looks a little smaller than a round of the same weight.",
+  asscher:"An asscher looks a little smaller than a round of the same weight.",
+  emerald:"An emerald cut looks about the same size as a round of the same weight, just longer.",
+  radiant:"A radiant looks about the same size as a round of the same weight.",
+  heart:"A heart looks a little smaller than a round of the same weight."
+};
 var SIZES=[
   {name:"Delicate",ct:"About half a carat",c:.5},
   {name:"Classic",ct:"About 1 carat",c:1},
@@ -476,23 +493,24 @@ var STEPS=[
     {id:"bandWidth",type:"single",label:"How thick should the band be?",sum:"Band thickness",options:["Whisper thin","Classic","Substantial"]},
     {id:"bandStyle",type:"multi",label:"Band details you like",hint:"Pick any.",sum:"Band details",options:["Plain and smooth","Tiny diamonds (pavé)","Twisted","Split band","Knife edge","Engraved or beaded"]},
     {id:"prongs",type:"single",label:"How many prongs holding the stone?",sum:"Prongs",options:["Four","Six","Claw-shaped","No idea, you choose"]},
-    {id:"extras",type:"multi",label:"Any hidden details?",hint:"Little things only you would know about.",sum:"Hidden details",options:["A hidden halo under the stone","An engraving inside the band","A tiny gem tucked on the side","Keep it simple"]},
+    {id:"extras",type:"multi",exclusive:"Keep it simple",label:"Any hidden details?",hint:"Little things only you would know about.",sum:"Hidden details",options:["A hidden halo under the stone","An engraving inside the band","A tiny gem tucked on the side","Keep it simple"]},
     {id:"stack",type:"single",label:"Should a wedding band sit flush against it?",sum:"Wedding band fit",options:["Yes, flush","A curved band is fine","Haven’t thought about it"]}
   ]},
   {title:"This or that",note:"Quick, gut answers.",qs:[
-    {id:"tot",type:"tot",label:"Pick one from each pair.",hint:"Skip any you truly can’t decide on.",sum:"This or that",pairs:[["Bigger stone","Finer stone"],["Timeless","One of a kind"],["Maximum sparkle","Soft glow"],["Dainty","Bold"],["Blends in","Gets noticed"],["Famous brand","Small jeweler"],["Brand new","Vintage"],["Diamond","Something colorful"]]},
+    {id:"tot",type:"tot",label:"Pick one from each pair.",hint:"Skip any you truly can’t decide on.",sum:"Gut picks",pairs:[["Bigger stone","Finer stone"],["Timeless","One of a kind"],["Maximum sparkle","Soft glow"],["Dainty","Bold"],["Blends in","Gets noticed"],["Famous brand","Small jeweler"],["Brand new","Vintage"],["Diamond","Something colorful"]]},
     {id:"rank",type:"rank",label:"Tap these in order of what matters most to you.",hint:"Tap one again to take it out.",sum:"Priorities, most important first",options:["Size","Sparkle","Whiteness (color)","Flawlessness (clarity)","Ethical sourcing","Uniqueness","Durability for everyday wear","Brand name"]}
   ]},
   {title:"The last few",note:"In your own words.",qs:[
     {id:"nos",type:"area",label:"Anything you definitely don’t want?",sum:"Definitely not",ph:"Shapes, styles, metals, anything"},
     {id:"dream",type:"area",label:"Describe your dream ring.",sum:"Dream ring",ph:"However it comes to you"},
     {id:"heirloom",type:"single",label:"Is there a family stone or heirloom you’d want included?",sum:"Family heirloom",options:["Yes","Maybe","No"]},
-    {id:"heirloomNote",type:"text",label:"If so, tell me about it.",sum:"Heirloom details",ph:"Optional"},
+    {id:"heirloomNote",type:"text",showIf:{q:"heirloom",in:["Yes","Maybe"]},label:"Tell me about it.",sum:"Heirloom details",ph:"Optional"},
     {id:"involve",type:"single",label:"How involved do you want to be?",sum:"Involvement",options:["Surprise me completely","Show me a short list","Let’s choose it together"]},
     {id:"else",type:"area",label:"Anything else I should know?",sum:"Anything else",ph:"Optional"}
   ]}
 ];
 var N=STEPS.length, REVIEW=N, DONE=N+1;
+var QMAP={};STEPS.forEach(function(st){st.qs.forEach(function(q){QMAP[q.id]=q;});});
 
 /* ================= state ================= */
 var KEY="kelly-ring-v2";
@@ -530,6 +548,11 @@ var B={
       box.append(h("button",{type:"button",class:"row",role:"radio","aria-checked":String(S.answers[q.id]===o),"data-k":o,onclick:function(){
         var nv=S.answers[q.id]===o?undefined:o;setA(q,nv);
         box.querySelectorAll(".row").forEach(function(b){b.setAttribute("aria-checked",String(b.getAttribute("data-k")===nv));});
+        refreshConditionals();
+      },onkeydown:function(e){
+        if(["ArrowDown","ArrowRight","ArrowUp","ArrowLeft"].indexOf(e.key)<0)return;
+        var rows=[].slice.call(box.querySelectorAll(".row")),i=rows.indexOf(e.currentTarget),d=(e.key==="ArrowDown"||e.key==="ArrowRight")?1:-1;
+        e.preventDefault();rows[(i+d+rows.length)%rows.length].focus();
       }},h("span",{class:"ind",html:RING_IND}),h("span",{},o)));
     });
     return box;
@@ -537,12 +560,16 @@ var B={
   multi:function(q){
     var box=h("div",{class:"pills",role:"group","aria-labelledby":"l-"+q.id}),count=q.max?h("p",{class:"counter","aria-live":"polite"}):null;
     var paint=function(){var arr=S.answers[q.id]||[];
-      box.querySelectorAll(".pill").forEach(function(b){b.setAttribute("aria-pressed",String(arr.indexOf(b.getAttribute("data-k"))>=0));});
+      var full=!!q.max&&arr.length>=q.max;
+      box.querySelectorAll(".pill").forEach(function(b){var on=arr.indexOf(b.getAttribute("data-k"))>=0;b.setAttribute("aria-pressed",String(on));
+        if(full&&!on)b.setAttribute("aria-disabled","true");else b.removeAttribute("aria-disabled");});
       if(q.max){box.classList.toggle("full",arr.length>=q.max);count.textContent=arr.length?arr.length+" of "+q.max+" chosen":"";}};
     q.options.forEach(function(o){
       box.append(h("button",{type:"button",class:"pill","data-k":o,onclick:function(){
         var arr=(S.answers[q.id]||[]).slice(),i=arr.indexOf(o);
-        if(i>=0)arr.splice(i,1);else{if(q.max&&arr.length>=q.max)return;arr.push(o);}
+        if(i>=0)arr.splice(i,1);else{if(q.max&&arr.length>=q.max)return;
+          if(q.exclusive){if(o===q.exclusive)arr=[];else arr=arr.filter(function(x){return x!==q.exclusive;});}
+          arr.push(o);}
         setA(q,arr.length?arr:undefined);paint();
       }},o));
     });
@@ -567,12 +594,13 @@ var B={
   slider:function(q){
     var cur=S.answers[q.id],idx=cur==null?1:cur,loved=lovedShapes();
     if(!previewShape||(previewShape!=="round"&&!loved.some(function(s){return s.id===previewShape;})))previewShape=loved.length?loved[0].id:"round";
-    var art=h("div",{class:"finger"}),name=h("p",{class:"size-name"}),ct=h("p",{class:"size-ct"});
+    var art=h("div",{class:"finger"}),name=h("p",{class:"size-name"}),ct=h("p",{class:"size-ct"}),fine=h("p",{class:"fine"});
     var input=h("input",{type:"range",min:"0",max:"4",step:"1",value:String(idx),"aria-labelledby":"l-"+q.id});
     var draw=function(){var v=+input.value,shapeName=(SETS.shape.filter(function(s){return s.id===previewShape;})[0]||{}).name||"Round";
       art.innerHTML=fingerSVG(previewShape,SIZES[v].c);name.textContent=SIZES[v].name;
       ct.textContent=S.answers[q.id]==null?"Slide to choose":SIZES[v].ct+", "+shapeName.toLowerCase();
-      input.setAttribute("aria-valuetext",SIZES[v].name+", "+SIZES[v].ct);input.style.setProperty("--p",(v/4*100)+"%");};
+      input.setAttribute("aria-valuetext",SIZES[v].name+", "+SIZES[v].ct);input.style.setProperty("--p",(v/4*100)+"%");
+      fine.textContent="Drawn to scale on an average ring finger. "+(LOOKS[previewShape]||"");};
     var commit=function(){setA(q,+input.value);draw();};
     input.addEventListener("input",commit);input.addEventListener("change",commit);input.addEventListener("pointerup",commit);
     var wrap=h("div",{class:"sizer"},art,h("div",{},name,ct,input,h("div",{class:"ends","aria-hidden":"true"},h("span",{},"Delicate"),h("span",{},"Showstopper"))));
@@ -583,7 +611,7 @@ var B={
         previewShape=s.id;pills.querySelectorAll(".pill").forEach(function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-k")===previewShape));});draw();}},s.name));});
       wrap.append(h("div",{class:"preview-as"},h("span",{},"Preview as"),pills));
     }
-    wrap.append(h("p",{class:"fine"},"Drawn to scale on an average ring finger."+(previewShape==="round"?" Ovals, pears and marquise look bigger than a round of the same weight.":"")));
+    wrap.append(fine);
     draw();return wrap;
   },
   tot:function(q){
@@ -638,8 +666,12 @@ var B={
     return s;
   }
 };
+function shown(q){return !q.showIf||q.showIf.in.indexOf(S.answers[q.showIf.q])>=0;}
+function refreshConditionals(){
+  document.querySelectorAll(".q[data-q]").forEach(function(el){var q=QMAP[el.getAttribute("data-q")];if(q&&q.showIf)el.hidden=!shown(q);});
+}
 function renderQ(q){
-  return h("div",{class:"q"},
+  return h("div",{class:"q","data-q":q.id,hidden:!shown(q)},
     q.label?h("p",{class:"q-label"+(q.hint?" has-hint":""),id:"l-"+q.id},q.label):null,
     q.hint?h("p",{class:"q-hint"},q.hint):null,
     q.legend?h("p",{class:"legend","aria-hidden":"true"},h("span",{html:HEART+"Love"}),h("span",{html:XMARK+"Not for me"}),h("span",{},"Tap again to clear")):null,
@@ -662,7 +694,7 @@ function fmt(q,v){
 function summary(){
   var out=["Kelly’s ring answers"];
   STEPS.forEach(function(st){var lines=[];
-    st.qs.forEach(function(q){var f=fmt(q,S.answers[q.id]);if(f)lines.push("- "+q.sum+": "+f);});
+    st.qs.forEach(function(q){if(!shown(q))return;var f=fmt(q,S.answers[q.id]);if(f)lines.push("- "+q.sum+": "+f);});
     if(lines.length){out.push("",st.title);out=out.concat(lines);}});
   if(out.length===1)out.push("","No answers yet.");
   return out.join("\n");
@@ -672,12 +704,22 @@ function smsHref(){return "sms:"+PHONE+"?&body="+encodeURIComponent(summary());}
 /* ================= views ================= */
 var app=document.getElementById("app"),topEl=document.getElementById("top"),foot=document.getElementById("foot"),footInner=document.getElementById("footInner"),dots=document.getElementById("dots");
 
-function go(n){var dir=n>view?"f":"b";view=n;if(n>=0&&n<N){S.at=n;}save();render(dir);window.scrollTo(0,0);}
+var lastNav=0;
+function nav(n){var t=Date.now();if(t-lastNav<350)return;lastNav=t;go(n);}
+function go(n,fromPop){
+  var dir=n>view?"f":"b";view=n;if(n>=0&&n<=REVIEW)S.at=n;save();
+  if(!fromPop){try{history.pushState({v:n},"");}catch(e){}}
+  render(dir);window.scrollTo(0,0);
+}
+window.addEventListener("popstate",function(e){
+  var v=e.state&&typeof e.state.v==="number"?e.state.v:-1;
+  if(v>=-1&&v<=DONE&&v!==view)go(v,true);
+});
 
 function paintDots(){
   if(!dots.childNodes.length){
     for(var i=0;i<=N;i++)(function(i){
-      dots.append(h("button",{type:"button",class:"dot"+(i===N?" review":""),"aria-label":i<N?"Section "+(i+1)+", "+STEPS[i].title:"Review",onclick:function(){if(i!==view)go(i);}},h("i",{})));
+      dots.append(h("button",{type:"button",class:"dot"+(i===N?" review":""),"aria-label":i<N?"Section "+(i+1)+", "+STEPS[i].title:"Review",onclick:function(){if(i!==view)nav(i);}},h("i",{})));
     })(i);
   }
   dots.querySelectorAll(".dot").forEach(function(d,i){
@@ -697,23 +739,23 @@ function render(dir){
   if(view<0){app.append(introView());return;}
   if(view===DONE){app.append(doneView());return;}
   var anim=dir==="b"?"enter-b":"enter-f";
-  var back=h("button",{type:"button",class:"btn ghost",onclick:function(){go(view-1);}},"Back");
+  var back=h("button",{type:"button",class:"btn ghost",onclick:function(){nav(view-1);}},"Back");
   if(view===REVIEW){
     app.append(reviewView(anim));
     setFoot(back,sendLink("btn"));
   }else{
     var st=STEPS[view];
-    var sec=h("section",{class:"step wrap "+anim,"aria-labelledby":"st-h"},h("h2",{id:"st-h",tabindex:"-1"},st.title),st.note?h("p",{class:"note"},st.note):null);
+    var sec=h("section",{class:"step wrap "+anim,"aria-labelledby":"st-h"},h("h1",{id:"st-h",tabindex:"-1"},st.title),st.note?h("p",{class:"note"},st.note):null);
     st.qs.forEach(function(q){sec.append(renderQ(q));});
     app.append(sec);
-    setFoot(back,h("button",{type:"button",class:"btn",onclick:function(){go(view+1);}},view===N-1?"Review my answers":"Continue"));
+    setFoot(back,h("button",{type:"button",class:"btn",onclick:function(){nav(view+1);}},view===N-1?"Review my answers":"Continue"));
   }
-  var hd=app.querySelector("h2");if(hd&&dir)try{hd.focus({preventScroll:true});}catch(e){}
+  var hd=app.querySelector("h1");if(hd&&dir&&view>=0)try{hd.focus({preventScroll:true});}catch(e){}
 }
 
 function sendLink(cls){
   var a=h("a",{class:cls,href:smsHref(),html:MSG_ICON+"<span>Text my answers to Frank</span>"});
-  a.addEventListener("click",function(){a.href=smsHref();S.sent=true;save();setTimeout(function(){go(DONE);},700);});
+  a.addEventListener("click",function(){a.href=smsHref();S.sent=true;save();setTimeout(function(){if(view!==DONE)go(DONE);},700);});
   return a;
 }
 
@@ -722,11 +764,11 @@ function introView(){
   var sec=h("section",{class:"intro"+(introPlayed?" still":"")});introPlayed=true;
   var d=function(s){return "animation-delay:"+s+"s";};
   var label=!has?"Begin":S.sent?"See my answers":"Pick up where you left off";
-  var start=h("button",{type:"button",class:"btn",onclick:function(){go(!has?0:S.sent?REVIEW:Math.min(S.at||0,N-1));}},label);
+  var start=h("button",{type:"button",class:"btn",onclick:function(){go(!has?0:S.sent?REVIEW:Math.max(0,Math.min(S.at||0,REVIEW)));}},label);
   var clear=null;
   if(has){var armed=false;clear=h("button",{type:"button",class:"linkbtn"},"Start over");
     clear.addEventListener("click",function(){if(!armed){armed=true;clear.textContent="Tap again to clear your answers";return;}
-      S={answers:{},at:0,started:false,sent:false};save();go(0);});}
+      S={answers:{},at:0,started:false,sent:false};previewShape=null;save();go(0);});}
   add(sec,[
     h("div",{class:"gem",html:heroSVG()}),
     h("h1",{class:"kelly fade",style:d(1.15)},"Kelly"),
@@ -753,19 +795,18 @@ function reviewValue(q,v){
 }
 
 function reviewView(anim){
-  var count=0;STEPS.forEach(function(st){st.qs.forEach(function(q){if(S.answers[q.id]!=null)count++;});});
-  var total=STEPS.reduce(function(n,st){return n+st.qs.length;},0);
+  var count=0,total=0;STEPS.forEach(function(st){st.qs.forEach(function(q){if(!shown(q))return;total++;if(S.answers[q.id]!=null)count++;});});
   var date=new Date().toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"});
   var report=h("div",{class:"report"},h("div",{class:"r-top",html:miniDiamond()},h("p",{},"Kelly’s ring",h("small",{},count+" of "+total+" answered, "+date))));
   STEPS.forEach(function(st,i){
     var dl=h("dl",{});
-    st.qs.forEach(function(q){var v=S.answers[q.id];if(v==null)return;dl.append(h("div",{},h("dt",{},q.sum),h("dd",{},reviewValue(q,v))));});
+    st.qs.forEach(function(q){var v=S.answers[q.id];if(v==null||!shown(q))return;dl.append(h("div",{},h("dt",{},q.sum),h("dd",{},reviewValue(q,v))));});
     report.append(h("div",{class:"r-sec"},
-      h("div",{class:"r-head"},h("h3",{},st.title),h("button",{type:"button",class:"linkbtn","aria-label":"Edit "+st.title,onclick:function(){go(i);}},"Edit")),
+      h("div",{class:"r-head"},h("h2",{},st.title),h("button",{type:"button",class:"linkbtn","aria-label":"Edit "+st.title,onclick:function(){go(i);}},"Edit")),
       dl.childNodes.length?dl:h("p",{class:"r-empty"},"Skipped")));
   });
   return h("section",{class:"review wrap "+anim,"aria-labelledby":"st-h"},
-    h("h2",{id:"st-h",tabindex:"-1"},"Look it over"),
+    h("h1",{id:"st-h",tabindex:"-1"},"Look it over"),
     h("p",{class:"note"},"Change anything you like. When it feels right, send it to me."),
     report,
     h("p",{class:"send-note"},"Messages opens with everything filled in. Just hit send."));
@@ -777,12 +818,12 @@ function doneView(){
   copyBtn.addEventListener("click",async function(){
     var t=summary(),ok=false;
     try{await navigator.clipboard.writeText(t);ok=true;}catch(e){}
-    if(!ok){try{raw.value=t;raw.select();ok=document.execCommand("copy");}catch(e){}}
+    if(!ok){try{raw.value=t;raw.readOnly=false;raw.focus({preventScroll:true});raw.setSelectionRange(0,t.length);ok=document.execCommand("copy");raw.readOnly=true;raw.blur();}catch(e){}}
     copyBtn.textContent=ok?"Copied":"Couldn’t copy, try again";
   });
   return h("section",{class:"done enter-f"},
     h("div",{class:"gem small still",html:heroSVG()}),
-    h("h2",{},"Thank you, Kelly."),
+    h("h1",{tabindex:"-1"},"Thank you, Kelly."),
     h("p",{class:"status"},"Once you hit send in Messages, your answers are on their way to me.",
       h("small",{},"If Messages didn’t open, copy your answers and text them to me instead.")),
     h("div",{class:"done-actions"},sendLink("btn"),copyBtn),
@@ -790,7 +831,17 @@ function doneView(){
     raw);
 }
 
+/* tuck the footer away only while an on-screen keyboard is actually open */
+if(window.visualViewport){
+  var VV=window.visualViewport,TYPING="input.field,textarea.field";
+  var kb=function(){var a=document.activeElement,t=!!(a&&a.matches&&a.matches(TYPING));
+    document.body.classList.toggle("typing",t&&VV.height<window.innerHeight*.8);};
+  VV.addEventListener("resize",kb);
+  document.addEventListener("focusin",kb);
+  document.addEventListener("focusout",function(){setTimeout(kb,60);});
+}
 load();
+try{history.replaceState({v:-1},"");}catch(e){}
 render();
 })();
 </script>
