@@ -98,7 +98,7 @@ button,a,input[type=range]{touch-action:manipulation}
 .still .glint{display:none}
 
 /* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border:1px solid var(--ink);background:var(--ink);color:var(--on-ink);border-radius:999px;padding:12px 28px;font-size:16px;font-weight:500;letter-spacing:.01em;cursor:pointer;text-decoration:none;text-align:center;transition:transform .12s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:nowrap;min-height:48px;border:1px solid var(--ink);background:var(--ink);color:var(--on-ink);border-radius:999px;padding:12px 28px;font-size:16px;font-weight:500;letter-spacing:.01em;cursor:pointer;text-decoration:none;text-align:center;transition:transform .12s}
 .btn:active{transform:scale(.97)}
 .btn.ghost{background:transparent;color:var(--ink);border-color:transparent;padding-left:10px;padding-right:10px}
 .btn.line{background:transparent;color:var(--ink);border-color:var(--line)}
@@ -259,11 +259,16 @@ body.typing .foot{transform:translateY(110%)}
   .ind .s,.dot i{transition:none}
 }
 @media (max-width:389px){
+  .foot .btn svg{display:none}
+  .foot .btn{padding-left:20px;padding-right:20px}
   .dots{gap:1px}
   .dot{width:19px}
   .top-inner{padding-left:20px;padding-right:20px}
 }
 @media (max-width:349px){
+  .foot-inner{padding:10px 14px;gap:8px}
+  .foot .btn{font-size:15px;padding-left:16px;padding-right:16px}
+  .foot .btn.ghost{padding-left:4px;padding-right:4px}
   .sizer{grid-template-columns:104px 1fr;gap:16px}
   .finger svg{width:104px}
   .wrap{padding-left:20px;padding-right:20px}
@@ -754,7 +759,7 @@ function render(dir){
 }
 
 function sendLink(cls){
-  var a=h("a",{class:cls,href:smsHref(),html:MSG_ICON+"<span>Text my answers to Frank</span>"});
+  var a=h("a",{class:cls,href:smsHref(),html:MSG_ICON+"<span>Text my answers to Frankie</span>"});
   a.addEventListener("click",function(){a.href=smsHref();S.sent=true;save();setTimeout(function(){if(view!==DONE)go(DONE);},700);});
   return a;
 }
@@ -773,7 +778,7 @@ function introView(){
     h("div",{class:"gem",html:heroSVG()}),
     h("h1",{class:"kelly fade",style:d(1.15)},"Kelly"),
     h("p",{class:"lede fade",style:d(1.45)},"A few questions about the ring you’d love, so I can get it exactly right."),
-    h("p",{class:"sign fade",style:d(1.6)},"Love, Frank"),
+    h("p",{class:"sign fade",style:d(1.6)},"Love, Frankie"),
     h("p",{class:"meta fade",style:d(1.75)},"It takes about eight minutes. Skip anything you like, and your answers save as you go."),
     h("div",{class:"intro-actions fade",style:d(1.9)},start,clear)
   ]);
